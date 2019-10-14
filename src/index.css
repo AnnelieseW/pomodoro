@@ -1,0 +1,53 @@
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  color: #2E531D;
+  font-size: 24px;
+}
+
+body {
+  background: #FFE8E1;
+}
+
+.container {
+  position: relative;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Countdown-time {
+  white-space: nowrap;
+  color: #FFFFFF;
+  font-size: 96px;
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.Button-start, .Button-stop {
+  display: inline-block;
+  justify-content: center;
+  top:55%;
+  position: absolute;
+  background-color: Transparent;
+  border-color: Transparent;
+}
+.setTime {
+  font-size: 36px;
+}
+
+.adjustTime {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.adjustTimeContainer {
+  display: inline-block;
+  margin: 10px;
+}
