@@ -11,6 +11,10 @@ body {
   background: #FFE8E1;
 }
 
+.tomato-img {
+  max-width: 100vw;
+}
+
 .container {
   position: relative;
   text-align: center;

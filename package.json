@@ -9,7 +9,7 @@
     "react-scripts": "3.2.0"
   },
   "scripts": {
-    "svgr": "svgr -d src/Icons/ assets/",
+    "svgr": "svgr -d src/Icons/ src/assets/",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
