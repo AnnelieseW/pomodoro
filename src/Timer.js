@@ -23,7 +23,14 @@ class Timer extends React.Component {
             timerStart: 0,
             timerTime: 1500000,
             timerInitial: 1500000,
-            timerShortRestInitial:500000,
+            timerShortRestInitial:300000,
+            timerLongRestInitial:300000,
+            timerState: 'study',
+            settingRounds: {
+                currentRound: 0,
+                roundsBeforeLongBreakInitial: 4,
+                totalStudyRoundsGoal: 12
+            }
         };
     }
     startTimer = () => {
@@ -37,9 +44,36 @@ class Timer extends React.Component {
                     timerTime: newTime
                 });
             } else {
-                clearInterval(this.timer);
-                this.setState({timerOn: false});
-                alert("Break Time");
+                if (this.state.timerState === 'study') {
+                    if (this.state.settingRounds.currentRound % this.state.settingRounds.roundsBeforeLongBreakInitial
+                    === 3) {
+                        this.setState(prevState =>({
+                            timerState: "longBreak",
+                            timerTime: this.state.timerLongRestInitial,
+                            settingRounds : {
+                                ...prevState.settingRounds,
+                                currentRound: this.state.settingRounds.currentRound + 1
+                            }
+                        }));
+                        alert("Break Time");
+                    } else {
+                        this.setState(prevState=>({
+                            timerState: "shortRest",
+                            timerTime: this.state.timerShortRestInitial,
+                            settingRounds : {
+                                ...prevState.settingRounds,
+                                currentRound: this.state.settingRounds.currentRound + 1
+                            }
+                        }));
+                        alert("Break Time");
+                    }
+                } else {
+                    this.setState({
+                        timerState: 'study',
+                        timerTime: this.state.timerInitial
+                    });
+                    alert("Back to Work");
+                }
             }
         },1000)
     };
@@ -54,41 +88,112 @@ class Timer extends React.Component {
             });
         }
     };
-    adjustTimer = input => {
-        const { timerTime, timerOn, timerInitial } = this.state;
+    adjustTimer = (input, state) => {
+        const { timerState, timerTime, timerOn, timerInitial, timerShortRestInitial, timerLongRestInitial } = this.state;
         const max = 216000000;
-        if (!timerOn) {
-            if (input === "incHours" && timerTime + 3600000 < max) {
-                this.setState({ timerInitial: timerInitial + 3600000 });
-            } else if (input === "decHours" && timerInitial - 3600000 >= 0) {
-                this.setState({ timerInitial: timerInitial - 3600000 });
-            } else if (input === "incMinutes" && timerInitial + 60000 < max) {
-                this.setState(
-                    {
-                        timerInitial: timerInitial + 60000,
-                        timerTime: this.state.timerInitial + 60000,
-                        timerStart: this.state.timerInitial + 60000
+            if (state === "study" && (!timerOn || timerState !== 'study')) {
+                // if (input === "incHours" && timerTime + 3600000 < max) {
+                //     this.setState({timerInitial: timerInitial + 3600000});
+                // } else if (input === "decHours" && timerInitial - 3600000 >= 0) {
+                //     this.setState({timerInitial: timerInitial - 3600000});
+                // } else
+                if (input === "incMinutes" && timerInitial + 60000 < max) {
+                    this.setState(
+                        {
+                            timerInitial: timerInitial + 60000,
+                        });
+                    if (timerState ==='study') {
+                        this.setState(
+                            {
+                                timerTime: this.state.timerInitial + 60000,
+                                timerStart: this.state.timerInitial + 60000
+                            });
+                    }
+                } else if (input === "decMinutes" && timerInitial - 60000 >= 0) {
+                    this.setState({
+                        timerInitial: timerInitial - 60000,
                     });
-            } else if (input === "decMinutes" && timerInitial - 60000 >= 0) {
-                this.setState({
-                    timerInitial: timerInitial - 60000,
-                    timerTime: this.state.timerInitial - 60000,
-                    timerStart: this.state.timerInitial - 60000
-                });
-            } else if (input === "incSeconds" && timerInitial + 1000 < max) {
-                this.setState({ timerInitial: timerInitial + 1000 });
-            } else if (input === "decSeconds" && timerInitial - 1000 >= 0) {
-                this.setState({ timerInitial: timerInitial - 1000 });
+                    if (timerState ==='study') {
+                        this.setState(
+                            {
+                                timerTime: this.state.timerInitial - 60000,
+                                timerStart: this.state.timerInitial - 60000
+                            });
+                    }
+
+                }
+                // } else if (input === "incSeconds" && timerInitial + 1000 < max) {
+                //     this.setState({timerInitial: timerInitial + 1000});
+                // } else if (input === "decSeconds" && timerInitial - 1000 >= 0) {
+                //     this.setState({timerInitial: timerInitial - 1000});
+                // }
+            } else if (state === "shortRest" && (!timerOn || timerState !== 'shortRest')) {
+                if (input === "incMinutes" && timerShortRestInitial + 60000 < max) {
+                    this.setState(
+                        {
+                            timerShortRestInitial: timerShortRestInitial + 60000,
+                        });
+                    if (timerState ==='shortRest') {
+                        this.setState(
+                            {
+                                timerTime: this.state.timerShortRestInitial + 60000,
+                                timerStart: this.state.timerShortRestInitial + 60000
+                            });
+                    }
+                } else if (input === "decMinutes" && timerShortRestInitial - 60000 >= 0) {
+                    this.setState({
+                        timerShortRestInitial: timerShortRestInitial - 60000,
+                    });
+                    if (timerState ==='shortRest') {
+                        this.setState(
+                            {
+                                timerTime: this.state.timerShortRestInitial - 60000,
+                                timerStart: this.state.timerShortRestInitial - 60000
+                            });
+                    }
+                }
+            } else if (state === "longRest" && (!timerOn || timerState !== "longRest" )) {
+                if (input === "incMinutes" && timerLongRestInitial + 60000 < max) {
+                    this.setState(
+                        {
+                            timerLongRestInitial: timerLongRestInitial + 60000,
+                        });
+
+                    if (timerState ==='longRest') {
+                        this.setState(
+                            {
+                                timerTime: this.state.timerLongRestInitial + 60000,
+                                timerStart: this.state.timerLongRestInitial + 60000
+                            });
+                    }
+                } else if (input === "decMinutes" && timerLongRestInitial - 60000 >= 0) {
+                    this.setState({
+                        timerLongRestInitial: timerLongRestInitial - 60000,
+                    });
+                    if (timerState ==='longRest') {
+                        this.setState(
+                            {
+                                timerTime: this.state.timerLongRestInitial - 60000,
+                                timerStart: this.state.timerLongRestInitial - 60000
+                            });
+                    }
+                }
             }
-        }
     };
 
     render() {
-        const { timerTime, timerStart, timerOn, timerInitial, timerShortRestInitial } = this.state;
+        const { timerTime, timerStart, timerOn, timerInitial, timerShortRestInitial, timerLongRestInitial, settingRounds } = this.state;
         let seconds = ("0" + (Math.floor((timerTime/ 1000) % 60) % 60)).slice(-2);
         let minutes = ("0" + Math.floor((timerTime/ 60000) % 60)).slice(-2);
+
         let studyLength = ("0" + Math.floor((timerInitial/ 60000) % 60)).slice(-2);
-        let shortRestLength = ("0" + Math.floor((timerShortRestInitial/ 60000) % 60)).slice(-2 )
+        let shortRestLength = ("0" + Math.floor((timerShortRestInitial/ 60000) % 60)).slice(-2 );
+        let longRestLength = ("0" + Math.floor((timerLongRestInitial/ 60000) % 60)).slice(-2 );
+
+        let round = settingRounds.currentRound % settingRounds.roundsBeforeLongBreakInitial;
+        let roundPerSession = settingRounds.roundsBeforeLongBreakInitial;
+        let currentRound = settingRounds.currentRound;
+        let goal = settingRounds.totalStudyRoundsGoal;
         return (
             <div className="Countdown-timer">
                 <div className="container">
@@ -113,32 +218,54 @@ class Timer extends React.Component {
                         </button>
                     )}
                 </div>
-                <div className="adjustTime">
-                    <p> Focus Length: </p>
-                    <div className="adjustTimeContainer">
-                        <button onClick={() => this.adjustTimer("incMinutes")}>&#8679;</button>
-                        <div className="setTime">{studyLength} </div>
-                        <button onClick={() => this.adjustTimer("decMinutes")}>&#8681;</button>
+
+                <div className="goal-setting">
+                    <div className="adjustTime">
+                        <p> Round: </p>
+                        <div className="adjustTimeContainer">
+                            <button onClick={() => this.adjustTimer("incMinutes", "study")}>&#8679;</button>
+                            <div className="setTime">{round} </div>
+                            <button onClick={() => this.adjustTimer("decMinutes", "study")}>&#8681;</button>
+                        </div>
                     </div>
-                    <p> mins </p>
+                    <div className="adjustTime">
+                        <p> Goal: </p>
+                        <div>{currentRound}</div>
+                        <div className="adjustTimeContainer">
+                            <button onClick={() => this.adjustTimer("incMinutes", "study")}>&#8679;</button>
+                            <div className="setTime">{goal} </div>
+                            <button onClick={() => this.adjustTimer("decMinutes", "study")}>&#8681;</button>
+                        </div>
+                    </div>
                 </div>
-                <div className="adjustTime">
-                    <p>Short Break Length: </p>
-                    <div className="adjustTimeContainer">
-                        <button onClick={() => this.adjustTimer("incMinutes")}>&#8679;</button>
-                        <div className="setTime">{shortRestLength} </div>
-                        <button onClick={() => this.adjustTimer("decMinutes")}>&#8681;</button>
+                <div>
+                    <div className="adjustTime">
+                        <p> Focus Length: </p>
+                        <div className="adjustTimeContainer">
+                            <button onClick={() => this.adjustTimer("incMinutes", "study")}>&#8679;</button>
+                            <div className="setTime">{studyLength} </div>
+                            <button onClick={() => this.adjustTimer("decMinutes", "study")}>&#8681;</button>
+                        </div>
+                        <p> mins </p>
                     </div>
-                    <p> mins </p>
-                </div>
-                <div className="adjustTime">
-                    <p>Long Break Length: </p>
-                    <div className="adjustTimeContainer">
-                        <button onClick={() => this.adjustTimer("incMinutes")}>&#8679;</button>
-                        <div className="setTime">{studyLength} </div>
-                        <button onClick={() => this.adjustTimer("decMinutes")}>&#8681;</button>
+                    <div className="adjustTime">
+                        <p>Short Break Length: </p>
+                        <div className="adjustTimeContainer">
+                            <button onClick={() => this.adjustTimer("incMinutes", "shortRest")}>&#8679;</button>
+                            <div className="setTime">{shortRestLength} </div>
+                            <button onClick={() => this.adjustTimer("decMinutes", "shortRest")}>&#8681;</button>
+                        </div>
+                        <p> mins </p>
                     </div>
-                    <p> mins </p>
+                    <div className="adjustTime">
+                        <p>Long Break Length: </p>
+                        <div className="adjustTimeContainer">
+                            <button onClick={() => this.adjustTimer("incMinutes", "longRest")}>&#8679;</button>
+                            <div className="setTime">{longRestLength} </div>
+                            <button onClick={() => this.adjustTimer("decMinutes", "longRest")}>&#8681;</button>
+                        </div>
+                        <p> mins </p>
+                    </div>
                 </div>
             </div>
         );
