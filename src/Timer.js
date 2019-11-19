@@ -250,54 +250,64 @@ class Timer extends React.Component {
                         </button>
                     )}
                 </div>
-
+                <div>
+                    <div className="container1">
                 <div className="goal-setting">
-                    <div className="adjustTime">
-                        <p> Round: </p>
-                        <div>{round}</div>
-                        <div className="adjustTimeContainer">
+                    <div className="adjustGoal">
+                        <p>Round</p>
+                        <div className="goal-container">
+                        <div className="setTime">{round} / </div>
+                        <div className="adjustGoalContainer">
                             <button onClick={() => this.adjustTimer("incRound", "round")}>&#8679;</button>
                             <div className="setTime">{roundPerSession} </div>
                             <button onClick={() => this.adjustTimer("decRound",  "round")}>&#8681;</button>
                         </div>
+                        </div>
                     </div>
-                    <div className="adjustTime">
-                        <p> Goal: </p>
-                        <div>{currentRound}</div>
-                        <div className="adjustTimeContainer">
+                    <div className="adjustGoal">
+                        <p> Goal</p>
+                        <div className="goal-container">
+                        <div className="setTime">{currentRound} / </div>
+                        <div className="adjustGoalContainer">
                             <button onClick={() => this.adjustTimer("incGoal", "goal")}>&#8679;</button>
                             <div className="setTime">{goal} </div>
                             <button onClick={() => this.adjustTimer("decGoal", "goal")}>&#8681;</button>
                         </div>
+                        </div>
                     </div>
                 </div>
-                <div>
-                    <div className="adjustTime">
-                        <p> Focus Length: </p>
-                        <div className="adjustTimeContainer">
-                            <button onClick={() => this.adjustTimer("incMinutes", "study")}>&#8679;</button>
-                            <div className="setTime">{studyLength} </div>
-                            <button onClick={() => this.adjustTimer("decMinutes", "study")}>&#8681;</button>
+
+                    <div className="container-adjustment">
+                        <div className="adjustTimeOutsideContainer">
+                            <div className="adjustTime">
+                                <p> Focus Length: </p>
+                                <div className="adjustTimeContainer">
+                                    <button onClick={() => this.adjustTimer("incMinutes", "study")}>&#8679;</button>
+                                    <div className="setTime">{studyLength} </div>
+                                    <button onClick={() => this.adjustTimer("decMinutes", "study")}>&#8681;</button>
+                                </div>
+                                <p> mins </p>
+                            </div>
+                            <div className="adjustTime">
+                                <p>Short Break Length: </p>
+                                <div className="adjustTimeContainer">
+                                    <button onClick={() => this.adjustTimer("incMinutes", "shortRest")}>&#8679;</button>
+                                    <div className="setTime">{shortRestLength} </div>
+                                    <button onClick={() => this.adjustTimer("decMinutes", "shortRest")}>&#8681;</button>
+                                </div>
+                                <p> mins </p>
+                            </div>
+                            <div className="adjustTime">
+                                <p>Long Break Length: </p>
+                                <div className="adjustTimeContainer">
+                                    <button onClick={() => this.adjustTimer("incMinutes", "longRest")}>&#8679;</button>
+                                    <div className="setTime">{longRestLength} </div>
+                                    <button onClick={() => this.adjustTimer("decMinutes", "longRest")}>&#8681;</button>
+                                </div>
+                                <p> mins </p>
+                            </div>
                         </div>
-                        <p> mins </p>
                     </div>
-                    <div className="adjustTime">
-                        <p>Short Break Length: </p>
-                        <div className="adjustTimeContainer">
-                            <button onClick={() => this.adjustTimer("incMinutes", "shortRest")}>&#8679;</button>
-                            <div className="setTime">{shortRestLength} </div>
-                            <button onClick={() => this.adjustTimer("decMinutes", "shortRest")}>&#8681;</button>
-                        </div>
-                        <p> mins </p>
-                    </div>
-                    <div className="adjustTime">
-                        <p>Long Break Length: </p>
-                        <div className="adjustTimeContainer">
-                            <button onClick={() => this.adjustTimer("incMinutes", "longRest")}>&#8679;</button>
-                            <div className="setTime">{longRestLength} </div>
-                            <button onClick={() => this.adjustTimer("decMinutes", "longRest")}>&#8681;</button>
-                        </div>
-                        <p> mins </p>
                     </div>
                 </div>
             </div>

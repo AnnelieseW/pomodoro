@@ -43,15 +43,57 @@ body {
 .setTime {
   font-size: 36px;
 }
-
-.adjustTime {
-  text-align: center;
-  display: flex;
+.container1{
+ display: grid;
+  grid-template-rows: 1fr auto;
+}
+.goal-setting {
+  display: inline-flex;
   justify-content: center;
+
+}
+.adjustGoal {
+  display: inline-table;
+  text-align: center;
+ padding:0  2em;
+}
+
+.goal-container {
+  display: flex;
   align-items: center;
 }
 
-.adjustTimeContainer {
+.container-adjustment {
+  display: inline-flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+.adjustTimeOutsideContainer {
+  display: inline-table;
+  justify-items: flex-end;
+}
+
+.adjustTime {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0 2em;
+}
+
+.adjustTimeContainer, .adjustGoalContainer {
   display: inline-block;
   margin: 10px;
+}
+
+@media (min-width: 769px) {
+  .Countdown-timer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .container1{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
 }
