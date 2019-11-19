@@ -199,14 +199,14 @@ class Timer extends React.Component {
                     this.setState(prevState => ({
                         settingRounds :{
                             ...prevState.settingRounds,
-                            roundsBeforeLongBreakInitial: this.state.settingRounds.totalStudyRoundsGoal + 1
+                            totalStudyRoundsGoal: this.state.settingRounds.totalStudyRoundsGoal + 1
                         }
                     }))
                 } else {
                     this.setState(prevState => ({
                         settingRounds :{
                             ...prevState.settingRounds,
-                            roundsBeforeLongBreakInitial: this.state.settingRounds.totalStudyRoundsGoal - 1
+                            totalStudyRoundsGoal: this.state.settingRounds.totalStudyRoundsGoal - 1
                         }
                     }))
                 }
