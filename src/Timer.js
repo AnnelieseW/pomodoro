@@ -178,6 +178,38 @@ class Timer extends React.Component {
                             });
                     }
                 }
+            } else if (state === "round") {
+                if (input === "incRound") {
+                    this.setState(prevState => ({
+                        settingRounds :{
+                            ...prevState.settingRounds,
+                            roundsBeforeLongBreakInitial: this.state.settingRounds.roundsBeforeLongBreakInitial + 1
+                        }
+                    }))
+                } else {
+                    this.setState(prevState => ({
+                        settingRounds :{
+                            ...prevState.settingRounds,
+                            roundsBeforeLongBreakInitial: this.state.settingRounds.roundsBeforeLongBreakInitial - 1
+                        }
+                    }))
+                }
+            } else if (state === "goal") {
+                if (input === "incGoal") {
+                    this.setState(prevState => ({
+                        settingRounds :{
+                            ...prevState.settingRounds,
+                            roundsBeforeLongBreakInitial: this.state.settingRounds.totalStudyRoundsGoal + 1
+                        }
+                    }))
+                } else {
+                    this.setState(prevState => ({
+                        settingRounds :{
+                            ...prevState.settingRounds,
+                            roundsBeforeLongBreakInitial: this.state.settingRounds.totalStudyRoundsGoal - 1
+                        }
+                    }))
+                }
             }
     };
 
@@ -222,19 +254,20 @@ class Timer extends React.Component {
                 <div className="goal-setting">
                     <div className="adjustTime">
                         <p> Round: </p>
+                        <div>{round}</div>
                         <div className="adjustTimeContainer">
-                            <button onClick={() => this.adjustTimer("incMinutes", "study")}>&#8679;</button>
-                            <div className="setTime">{round} </div>
-                            <button onClick={() => this.adjustTimer("decMinutes", "study")}>&#8681;</button>
+                            <button onClick={() => this.adjustTimer("incRound", "round")}>&#8679;</button>
+                            <div className="setTime">{roundPerSession} </div>
+                            <button onClick={() => this.adjustTimer("decRound",  "round")}>&#8681;</button>
                         </div>
                     </div>
                     <div className="adjustTime">
                         <p> Goal: </p>
                         <div>{currentRound}</div>
                         <div className="adjustTimeContainer">
-                            <button onClick={() => this.adjustTimer("incMinutes", "study")}>&#8679;</button>
+                            <button onClick={() => this.adjustTimer("incGoal", "goal")}>&#8679;</button>
                             <div className="setTime">{goal} </div>
-                            <button onClick={() => this.adjustTimer("decMinutes", "study")}>&#8681;</button>
+                            <button onClick={() => this.adjustTimer("decGoal", "goal")}>&#8681;</button>
                         </div>
                     </div>
                 </div>
