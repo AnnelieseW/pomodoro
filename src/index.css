@@ -88,6 +88,13 @@ body {
   margin: 10px;
 }
 
+@media (max-width: 320px) {
+
+  .Countdown-time {
+    font-size: 75px;
+  }
+
+}
 @media (min-width: 965px) {
   .Countdown-timer {
     display: grid;
